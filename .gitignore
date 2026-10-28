@@ -1,0 +1,27 @@
+
+# Dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Build outputs
+dist/
+client/dist/
+server/dist/
+
+# Local logs
+*.log
+
+# Editor and operating system files
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Project checkpoint documents - do not upload
+H*_Checkpoint.html
+H*_Checkpoint.pdf
