@@ -29,6 +29,9 @@ H*_Checkpoint.pdf
 PROJECT_LOG.md
 TRAVELMATE_TECHNICAL_DOCUMENTATION.md
 Version 2.md
+Final MD File.md
+*.md
+!README.md
 scratch/
 test.pdf
 test_story.pdf

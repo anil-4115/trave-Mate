@@ -3,16 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "description": "TravelMate trip planning API",
-  "main": "dist/server.js",
+  "main": "src/server.js",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
-    "build": "tsc",
-    "start": "node dist/server.js",
-    "test": "node --import tsx --test src/__tests__/*.test.ts",
-    "typecheck": "tsc --noEmit",
-    "seed:destination-costs": "tsx src/scripts/seedDestinationCosts.ts",
-    "seed:destinations": "tsx src/scripts/seedDestinations.ts"
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "test": "node --test src/__tests__/*.test.js",
+    "seed:destination-costs": "node src/scripts/seedDestinationCosts.js",
+    "seed:destinations": "node src/scripts/seedDestinations.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
@@ -21,13 +19,5 @@
     "express": "^5.3.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.11.4"
-  },
-  "devDependencies": {
-    "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.6",
-    "@types/jsonwebtoken": "^9.0.10",
-    "@types/node": "^26.6.5",
-    "tsx": "^4.23.15",
-    "typescript": "^7.0.2"
   }
 }
