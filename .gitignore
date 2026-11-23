@@ -25,3 +25,10 @@ Thumbs.db
 # Project checkpoint documents - do not upload
 H*_Checkpoint.html
 H*_Checkpoint.pdf
+*.pdf
+PROJECT_LOG.md
+TRAVELMATE_TECHNICAL_DOCUMENTATION.md
+Version 2.md
+scratch/
+test.pdf
+test_story.pdf

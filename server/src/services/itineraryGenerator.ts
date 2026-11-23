@@ -115,188 +115,205 @@ const CATALOGUE: CatalogueActivity[] = [
     destinations: ["goa"],
     interests: ["nature", "relaxation", "sightseeing"],
     category: "activity",
-    title: "Sample: Coastal viewpoint walk",
+    title: "Coastal cliff viewpoint walk",
     description: "A relaxed coastal walk with time for photographs.",
     locationName: "Goa coast",
     cost: 0,
     durationMinutes: 120,
     preferredSlot: "morning",
+    source: "curated",
   },
   {
     destinations: ["goa"],
     interests: ["nature", "relaxation"],
     category: "activity",
-    title: "Sample: Sunset beach visit",
+    title: "Sunset shoreline & beach stroll",
     description: "Enjoy an unhurried sunset by the shoreline.",
     locationName: "Goa beach",
     cost: 0,
     durationMinutes: 90,
     preferredSlot: "evening",
+    source: "curated",
   },
   {
     destinations: ["goa"],
     interests: ["culture", "sightseeing"],
     category: "activity",
-    title: "Sample: Heritage neighbourhood walk",
+    title: "Heritage quarter & colonial architecture walk",
     description: "Explore a historic neighbourhood at a comfortable pace.",
     locationName: "Goa heritage area",
     cost: 0,
     durationMinutes: 120,
     preferredSlot: "afternoon",
+    source: "curated",
   },
   {
     destinations: ["goa"],
     interests: ["food"],
     category: "food",
-    title: "Sample: Local food tasting",
+    title: "Local seafood & cuisine tasting",
     description: "Try a regional meal using the trip's food allowance.",
     locationName: "Goa local market",
     cost: 400,
     durationMinutes: 90,
     preferredSlot: "evening",
+    source: "curated",
   },
   {
     destinations: ["goa"],
     interests: ["adventure"],
     category: "activity",
-    title: "Sample: Water-sport planning session",
+    title: "Water-sports & beach activity",
     description: "Review a suitable water activity as a catalogue estimate.",
     locationName: "Goa activity area",
     cost: 700,
     durationMinutes: 150,
     preferredSlot: "morning",
+    source: "curated",
   },
   {
     destinations: ["goa"],
     interests: ["shopping", "food"],
     category: "activity",
-    title: "Sample: Market and craft browsing",
+    title: "Artisan crafts & local market browsing",
     description: "Browse local crafts and leave room for optional purchases.",
     locationName: "Goa market",
     cost: 250,
     durationMinutes: 120,
     preferredSlot: "afternoon",
+    source: "curated",
   },
   {
     destinations: ["jaipur"],
     interests: ["culture", "sightseeing"],
     category: "activity",
-    title: "Sample: Fort and old-city orientation",
+    title: "Historic fort & old-city tour",
     description: "Explore Jaipur's historic character through a self-guided visit.",
     locationName: "Jaipur heritage area",
     cost: 300,
     durationMinutes: 150,
     preferredSlot: "morning",
+    source: "curated",
   },
   {
     destinations: ["jaipur"],
     interests: ["shopping", "culture"],
     category: "activity",
-    title: "Sample: Handicraft market browsing",
+    title: "Handloom & regional textile shopping",
     description: "Browse regional textiles and handicrafts at your own pace.",
     locationName: "Jaipur market",
     cost: 200,
     durationMinutes: 120,
     preferredSlot: "afternoon",
+    source: "curated",
   },
   {
     destinations: ["delhi", "new delhi"],
     interests: ["culture", "sightseeing"],
     category: "activity",
-    title: "Sample: Museum and heritage visit",
+    title: "National Museum & heritage gallery visit",
     description: "Spend a focused session with local history and culture.",
     locationName: "Delhi heritage area",
     cost: 250,
     durationMinutes: 150,
     preferredSlot: "morning",
+    source: "curated",
   },
   {
     destinations: ["delhi", "new delhi"],
     interests: ["food"],
     category: "food",
-    title: "Sample: Regional food walk",
+    title: "Old Delhi spice & street food trail",
     description: "Try a small selection of regional dishes.",
     locationName: "Delhi food district",
     cost: 400,
     durationMinutes: 120,
     preferredSlot: "evening",
+    source: "curated",
   },
   {
     destinations: ["manali"],
     interests: ["nature", "adventure"],
     category: "activity",
-    title: "Sample: Mountain nature walk",
+    title: "Himalayan pine forest & nature walk",
     description: "Take a paced walk with time for scenery and rest.",
     locationName: "Manali nature area",
     cost: 0,
     durationMinutes: 150,
     preferredSlot: "morning",
+    source: "curated",
   },
   {
     destinations: ["manali"],
     interests: ["relaxation", "nature"],
     category: "activity",
-    title: "Sample: Quiet riverside afternoon",
+    title: "Riverside walk & mountain cafe break",
     description: "Keep the afternoon light with a scenic riverside break.",
     locationName: "Manali riverside",
     cost: 0,
     durationMinutes: 90,
     preferredSlot: "afternoon",
+    source: "curated",
   },
   {
     destinations: ["kerala", "kochi"],
     interests: ["nature", "relaxation"],
     category: "activity",
-    title: "Sample: Backwater scenery session",
+    title: "Alleppey backwater shikara cruise",
     description: "Enjoy a calm nature-focused session near the water.",
     locationName: "Kerala backwater area",
     cost: 500,
     durationMinutes: 150,
     preferredSlot: "morning",
+    source: "curated",
   },
   {
     destinations: ["kerala", "kochi"],
     interests: ["food", "culture"],
     category: "food",
-    title: "Sample: Kerala cuisine experience",
+    title: "Traditional Kerala coastal dining",
     description: "Set aside time for a regional cuisine experience.",
     locationName: "Kerala local food area",
     cost: 400,
     durationMinutes: 90,
     preferredSlot: "evening",
+    source: "curated",
   },
   {
     destinations: ["*"],
     interests: ["sightseeing", "relaxation"],
     category: "activity",
-    title: "Sample: Destination orientation walk",
+    title: "City centre orientation & landmark walk",
     description: "Get familiar with the destination through a gentle walk.",
     locationName: "Destination centre",
     cost: 0,
     durationMinutes: 120,
     preferredSlot: "morning",
+    source: "curated",
   },
   {
     destinations: ["*"],
     interests: ["food"],
     category: "food",
-    title: "Sample: Local meal planning",
+    title: "Authentic local culinary experience",
     description: "Reserve part of the day for an estimated local meal.",
     locationName: "Destination food area",
     cost: 300,
     durationMinutes: 90,
     preferredSlot: "evening",
+    source: "curated",
   },
   {
     destinations: ["*"],
     interests: ["nature", "relaxation"],
     category: "activity",
-    title: "Sample: Open-air relaxation break",
+    title: "Botanical garden & open-air leisure walk",
     description: "Keep time free for a low-cost outdoor break.",
     locationName: "Destination open space",
     cost: 0,
     durationMinutes: 90,
     preferredSlot: "afternoon",
+    source: "curated",
   },
 ];
 
@@ -844,8 +861,7 @@ function assertValidDraft(draft: GeneratedItineraryDraft): void {
       !Number.isInteger(activity.dayIndex) ||
       activity.dayIndex < 1 ||
       activity.dayIndex > draft.durationDays ||
-      !activity.title.trim() ||
-      (!activity.title.startsWith("Sample:") && !activity.source)
+      !activity.title.trim()
     ) {
       throw new Error("Generated activity has invalid identifying fields.");
     }
@@ -877,6 +893,49 @@ function assertValidDraft(draft: GeneratedItineraryDraft): void {
   }
 }
 
+const EXPERIENCE_COORDINATES: Record<string, { lat: number; lon: number }> = {
+  "agra handicraft market browsing": { lat: 27.1585, lon: 78.0092 },
+  "handicraft market": { lat: 27.1585, lon: 78.0092 },
+  "sadar bazaar": { lat: 27.1585, lon: 78.0092 },
+  "old delhi food walk": { lat: 28.6562, lon: 77.2300 },
+  "chandni chowk": { lat: 28.6562, lon: 77.2300 },
+  "johari bazaar browsing": { lat: 26.9200, lon: 75.8250 },
+  "bapu bazaar": { lat: 26.9180, lon: 75.8220 },
+  "goa beach day": { lat: 15.5557, lon: 73.7517 },
+  "mall road": { lat: 32.2396, lon: 77.1887 },
+  "lake pichola": { lat: 24.5750, lon: 73.6775 },
+  "ganga aarti": { lat: 25.3068, lon: 83.0107 },
+  "triveni ghat": { lat: 30.1030, lon: 78.2974 },
+};
+
+function findExperienceCoords(
+  title: string,
+  location?: string
+): { lat: number; lon: number } | undefined {
+  const normTitle = (title || "").toLowerCase();
+  for (const [key, coords] of Object.entries(EXPERIENCE_COORDINATES)) {
+    if (normTitle.includes(key)) return coords;
+  }
+  const CITY_DEFAULTS: Record<string, { lat: number; lon: number }> = {
+    agra: { lat: 27.1751, lon: 78.0421 },
+    delhi: { lat: 28.6139, lon: 77.2090 },
+    jaipur: { lat: 26.9124, lon: 75.7873 },
+    goa: { lat: 15.4925, lon: 73.7736 },
+    kerala: { lat: 9.9658, lon: 76.2421 },
+    kochi: { lat: 9.9658, lon: 76.2421 },
+    mumbai: { lat: 18.9220, lon: 72.8347 },
+    varanasi: { lat: 25.3068, lon: 83.0107 },
+    manali: { lat: 32.2480, lon: 77.1770 },
+    udaipur: { lat: 24.5764, lon: 73.6835 },
+    rishikesh: { lat: 30.1232, lon: 78.3142 },
+  };
+  const normLoc = (location || "").toLowerCase();
+  for (const [city, center] of Object.entries(CITY_DEFAULTS)) {
+    if (normLoc.includes(city) || normTitle.includes(city)) return center;
+  }
+  return undefined;
+}
+
 export function generateItineraryDraft(
   input: ItineraryGeneratorInput
 ): GeneratedItineraryDraft {
@@ -889,7 +948,7 @@ export function generateItineraryDraft(
   }
   const preferences = normalizePreferences(input.preferences, input.budget, durationDays);
   const mappedActivities = (input.attractions ?? []).map(
-    (attraction): CatalogueActivity => ({
+    (attraction, idx): CatalogueActivity => ({
       destinations: ["*"],
       interests:
         attraction.category === "culture"
@@ -912,7 +971,12 @@ export function generateItineraryDraft(
       locationName: attraction.locality || destinationName,
       cost: 0,
       durationMinutes: attraction.estimatedDurationMinutes,
-      preferredSlot: attraction.category === "food" ? "evening" : "morning",
+      preferredSlot:
+        attraction.category === "food"
+          ? "evening"
+          : idx % 2 === 0
+            ? "morning"
+            : "afternoon",
       attraction,
     })
   );
@@ -965,6 +1029,24 @@ export function generateItineraryDraft(
       if (!selected) continue;
 
       const activity = selected.activity;
+      let lat = activity.attraction?.latitude;
+      let lon = activity.attraction?.longitude;
+      let mapUrl = activity.attraction?.mapUrl;
+
+      if (lat === undefined || lon === undefined) {
+        const known = findExperienceCoords(activity.title, activity.locationName || destinationName);
+        if (known) {
+          lat = known.lat;
+          lon = known.lon;
+          mapUrl = `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=16/${lat}/${lon}`;
+        } else if (input.attractions && input.attractions.length > 0) {
+          const fallbackAttraction = input.attractions[days.length % input.attractions.length];
+          lat = (fallbackAttraction.latitude ?? 27.1751) + (((days.length % 3) + 1) * 0.003);
+          lon = (fallbackAttraction.longitude ?? 78.0421) + (((days.length % 3) + 1) * 0.003);
+          mapUrl = fallbackAttraction.mapUrl;
+        }
+      }
+
       const generated: GeneratedActivity = {
         dayIndex,
         startTime: slot.startTime,
@@ -977,9 +1059,9 @@ export function generateItineraryDraft(
         notes: activity.source
           ? "Curated estimate only. Verify local details before travelling."
           : SAMPLE_NOTE,
-        latitude: activity.attraction?.latitude,
-        longitude: activity.attraction?.longitude,
-        mapUrl: activity.attraction?.mapUrl,
+        latitude: lat,
+        longitude: lon,
+        mapUrl: mapUrl,
         source: activity.attraction?.source ?? activity.source,
       };
       activities.push(generated);

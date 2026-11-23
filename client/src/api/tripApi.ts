@@ -136,6 +136,41 @@ export async function deleteTrip(tripId: string): Promise<void> {
   }
 }
 
+export interface UpdateTripData {
+  startDate?: string;
+  endDate?: string;
+  travelers?: number;
+  budget?: number;
+}
+
+export interface UpdateTripResponse {
+  success: boolean;
+  message?: string;
+  data: Trip;
+}
+
+export async function updateTrip(
+  tripId: string,
+  tripData: UpdateTripData
+): Promise<UpdateTripResponse> {
+  const response = await fetch(`${API_BASE_URL}/trips/${tripId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      ...getAuthHeaders(),
+    },
+    body: JSON.stringify(tripData),
+  });
+
+  const result: UpdateTripResponse = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || "Failed to update trip");
+  }
+
+  return result;
+}
+
 interface ExpensesResponse {
   success: boolean;
   count: number;
@@ -509,6 +544,88 @@ export async function getItinerary(
 
   if (!result.data) {
     throw new Error("Itinerary response was empty");
+  }
+
+  return result.data;
+}
+
+export interface DayRouteLeg {
+  fromTitle: string;
+  toTitle: string;
+  distanceKm: number;
+}
+
+export interface OptimizedDayItineraryResult {
+  dayIndex: number;
+  activities: SavedItineraryActivity[];
+  totalDistanceKm: number;
+  legs: DayRouteLeg[];
+  optimized: boolean;
+  disclaimer: string;
+}
+
+export interface OptimizeItineraryDaysResult {
+  dayResults: OptimizedDayItineraryResult[];
+  totalDistanceKm: number;
+  activities: SavedItineraryActivity[];
+}
+
+export interface OptimizeDayItineraryPayload {
+  dayIndex: number;
+  activities?: SavedItineraryActivity[];
+  startAttractionTitle?: string;
+  startAttractionId?: string;
+}
+
+export interface OptimizeAllDaysItineraryPayload {
+  activities?: SavedItineraryActivity[];
+  startAttractionTitle?: string;
+}
+
+export async function optimizeItineraryDay(
+  tripId: string,
+  payload: OptimizeDayItineraryPayload
+): Promise<OptimizedDayItineraryResult> {
+  const url = `${API_BASE_URL}/trips/${tripId}/itinerary/optimize-day`;
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...getAuthHeaders(),
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || "Failed to optimize day itinerary route");
+  }
+
+  return result.data;
+}
+
+export async function optimizeAllItineraryDays(
+  tripId: string,
+  payload?: OptimizeAllDaysItineraryPayload
+): Promise<OptimizeItineraryDaysResult> {
+  const response = await fetch(
+    `${API_BASE_URL}/trips/${tripId}/itinerary/optimize-all-days`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...getAuthHeaders(),
+      },
+      body: JSON.stringify(payload || {}),
+    }
+  );
+
+  const result = await response.json();
+  if (!response.ok) {
+    throw new Error(
+      result.message || "Failed to optimize all itinerary days route"
+    );
   }
 
   return result.data;

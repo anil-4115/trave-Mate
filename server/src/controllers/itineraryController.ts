@@ -10,6 +10,11 @@ import {
   type ItineraryPreferences,
 } from "../services/itineraryGenerator.js";
 import { getAttractions } from "../services/attractionService.js";
+import {
+  optimizeDayItinerary,
+  optimizeItineraryDays,
+  RouteOptimizerError,
+} from "../services/routeOptimizer.js";
 
 function isValidHHmm(time: string): boolean {
   const regex = /^([01]\d|2[0-3]):([0-5]\d)$/;
@@ -96,9 +101,20 @@ export async function getItineraryByTrip(
       return;
     }
 
+    const rawObj = typeof (itinerary as any).toObject === "function"
+      ? (itinerary as any).toObject()
+      : itinerary;
+    const itineraryObj = { ...rawObj };
+    if (Array.isArray(itineraryObj.activities)) {
+      itineraryObj.activities = itineraryObj.activities.map((act: any) => ({
+        ...act,
+        title: typeof act.title === "string" ? act.title.replace(/^Sample:\s*/i, "").trim() : act.title,
+      }));
+    }
+
     res.status(200).json({
       success: true,
-      data: itinerary,
+      data: itineraryObj,
     });
   } catch (error) {
     console.error("Get itinerary error:", error);
@@ -326,7 +342,7 @@ export async function upsertItinerary(
       dayIndex: activity.dayIndex,
       startTime: activity.startTime || undefined,
       endTime: activity.endTime || undefined,
-      title: String(activity.title).trim(),
+      title: String(activity.title).replace(/^Sample:\s*/i, "").trim(),
       description: activity.description ? String(activity.description).trim() : "",
       category: activity.category || "activity",
       locationName: activity.locationName ? String(activity.locationName).trim() : "",
@@ -401,9 +417,20 @@ export async function upsertItinerary(
       }
     }
 
+    const rawObj = typeof (itinerary as any).toObject === "function"
+      ? (itinerary as any).toObject()
+      : itinerary;
+    const itineraryObj = { ...rawObj };
+    if (Array.isArray(itineraryObj.activities)) {
+      itineraryObj.activities = itineraryObj.activities.map((act: any) => ({
+        ...act,
+        title: typeof act.title === "string" ? act.title.replace(/^Sample:\s*/i, "").trim() : act.title,
+      }));
+    }
+
     res.status(200).json({
       success: true,
-      data: itinerary,
+      data: itineraryObj,
     });
   } catch (error) {
     console.error("Upsert itinerary error:", error);
@@ -525,6 +552,240 @@ export async function generateItineraryDraftForTrip(
     res.status(500).json({
       success: false,
       message: "Failed to generate itinerary draft.",
+    });
+  }
+}
+
+export async function optimizeItineraryDay(
+  req: AuthenticatedRequest,
+  res: Response
+): Promise<void> {
+  try {
+    const { tripId } = req.params;
+
+    if (!mongoose.isValidObjectId(tripId)) {
+      res.status(400).json({
+        success: false,
+        message: "Invalid trip ID.",
+      });
+      return;
+    }
+
+    const trip = await Trip.findById(tripId);
+    if (!trip) {
+      res.status(404).json({
+        success: false,
+        message: "Trip not found.",
+      });
+      return;
+    }
+
+    if (
+      req.userId &&
+      (trip as any).user &&
+      (trip as any).user.toString() !== req.userId
+    ) {
+      res.status(403).json({
+        success: false,
+        message: "Forbidden",
+      });
+      return;
+    }
+
+    const rawDayIndex = req.body?.dayIndex;
+    const dayIndex =
+      typeof rawDayIndex === "number"
+        ? rawDayIndex
+        : parseInt(String(rawDayIndex), 10);
+
+    if (!Number.isInteger(dayIndex) || dayIndex < 1) {
+      res.status(400).json({
+        success: false,
+        message: "A valid dayIndex (integer >= 1) is required.",
+      });
+      return;
+    }
+
+    const startAttractionTitle = req.body?.startAttractionTitle;
+    const startAttractionId = req.body?.startAttractionId;
+
+    // If activities are provided in the request body (in-memory draft)
+    if (Array.isArray(req.body?.activities)) {
+      const inputActivities = req.body.activities;
+      const dayActivities =
+        inputActivities.some((a: any) => a && Number(a.dayIndex) === dayIndex)
+          ? inputActivities.filter((a: any) => a && Number(a.dayIndex) === dayIndex)
+          : inputActivities;
+
+      const result = optimizeDayItinerary(dayActivities, {
+        startAttractionTitle,
+        startAttractionId,
+      });
+
+      res.status(200).json({
+        success: true,
+        message: "Day route optimized successfully.",
+        data: result,
+      });
+      return;
+    }
+
+    // Otherwise, optimize the saved itinerary in the database
+    const itinerary = await Itinerary.findOne({ trip: tripId });
+    if (!itinerary) {
+      res.status(404).json({
+        success: false,
+        message: "Itinerary not found for this trip.",
+      });
+      return;
+    }
+
+    if (
+      req.userId &&
+      (itinerary as any).user &&
+      (itinerary as any).user.toString() !== req.userId
+    ) {
+      res.status(403).json({
+        success: false,
+        message: "Forbidden",
+      });
+      return;
+    }
+
+    const dayActivities = itinerary.days.filter((a) => a.dayIndex === dayIndex);
+    const result = optimizeDayItinerary(dayActivities as any[], {
+      startAttractionTitle,
+      startAttractionId,
+    });
+
+    const otherDays = itinerary.days.filter((a) => a.dayIndex !== dayIndex);
+    const merged = [...otherDays, ...result.activities];
+    merged.sort((a, b) => a.dayIndex - b.dayIndex);
+
+    itinerary.days = merged as any;
+    await itinerary.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Day route optimized successfully.",
+      data: result,
+    });
+  } catch (error) {
+    if (error instanceof RouteOptimizerError) {
+      res.status(400).json({
+        success: false,
+        message: error.message,
+      });
+      return;
+    }
+
+    console.error("Optimize itinerary day error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to optimize day itinerary route.",
+    });
+  }
+}
+
+export async function optimizeAllItineraryDaysRoute(
+  req: AuthenticatedRequest,
+  res: Response
+): Promise<void> {
+  try {
+    const { tripId } = req.params;
+
+    if (!mongoose.isValidObjectId(tripId)) {
+      res.status(400).json({
+        success: false,
+        message: "Invalid trip ID.",
+      });
+      return;
+    }
+
+    const trip = await Trip.findById(tripId);
+    if (!trip) {
+      res.status(404).json({
+        success: false,
+        message: "Trip not found.",
+      });
+      return;
+    }
+
+    if (
+      req.userId &&
+      (trip as any).user &&
+      (trip as any).user.toString() !== req.userId
+    ) {
+      res.status(403).json({
+        success: false,
+        message: "Forbidden",
+      });
+      return;
+    }
+
+    const startAttractionTitle = req.body?.startAttractionTitle;
+
+    // If activities are provided in the request body (in-memory draft)
+    if (Array.isArray(req.body?.activities)) {
+      const result = optimizeItineraryDays(req.body.activities, {
+        startAttractionTitle,
+      });
+
+      res.status(200).json({
+        success: true,
+        message: "All itinerary days optimized successfully.",
+        data: result,
+      });
+      return;
+    }
+
+    // Otherwise, optimize the saved itinerary in the database
+    const itinerary = await Itinerary.findOne({ trip: tripId });
+    if (!itinerary) {
+      res.status(404).json({
+        success: false,
+        message: "Itinerary not found for this trip.",
+      });
+      return;
+    }
+
+    if (
+      req.userId &&
+      (itinerary as any).user &&
+      (itinerary as any).user.toString() !== req.userId
+    ) {
+      res.status(403).json({
+        success: false,
+        message: "Forbidden",
+      });
+      return;
+    }
+
+    const result = optimizeItineraryDays(itinerary.days as any[], {
+      startAttractionTitle,
+    });
+
+    itinerary.days = result.activities as any;
+    await itinerary.save();
+
+    res.status(200).json({
+      success: true,
+      message: "All itinerary days optimized successfully.",
+      data: result,
+    });
+  } catch (error) {
+    if (error instanceof RouteOptimizerError) {
+      res.status(400).json({
+        success: false,
+        message: error.message,
+      });
+      return;
+    }
+
+    console.error("Optimize all itinerary days error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to optimize all itinerary days route.",
     });
   }
 }

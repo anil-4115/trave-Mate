@@ -48,6 +48,43 @@ interface DestinationResponse {
   data: Destination[];
 }
 
+export interface OptimizeRouteRequest {
+  attractionIds: string[];
+  startAttractionId?: string;
+}
+
+export interface RouteStop {
+  order: number;
+  id: string;
+  name: string;
+  latitude: number;
+  longitude: number;
+  distanceFromPreviousKm: number;
+  category?: AttractionCategory;
+  locality?: string;
+  estimatedDurationMinutes?: number;
+  mapUrl?: string;
+}
+
+export interface RouteLeg {
+  fromId: string;
+  fromName: string;
+  toId: string;
+  toName: string;
+  distanceKm: number;
+}
+
+export interface OptimizedRouteResponse {
+  success: boolean;
+  destinationId: string;
+  destinationName: string;
+  totalDistanceKm: number;
+  disclaimer: string;
+  orderedStops: RouteStop[];
+  legs: RouteLeg[];
+  message?: string;
+}
+
 export async function getDestinations(): Promise<Destination[]> {
   const response = await fetch(`${API_BASE_URL}/destinations`);
 
@@ -69,6 +106,28 @@ export async function getDestinationAttractions(
   const result: AttractionsResponse = await response.json();
   if (!response.ok) {
     throw new Error(result.warning || "Failed to fetch attractions");
+  }
+  return result;
+}
+
+export async function optimizeRoute(
+  destinationId: string,
+  payload: OptimizeRouteRequest
+): Promise<OptimizedRouteResponse> {
+  const response = await fetch(
+    `${API_BASE_URL}/destinations/${destinationId}/optimize-route`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    }
+  );
+
+  const result = (await response.json()) as OptimizedRouteResponse;
+  if (!response.ok) {
+    throw new Error(result.message || "Failed to optimize route");
   }
   return result;
 }

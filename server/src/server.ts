@@ -37,8 +37,69 @@ app.use("/api/trips", packingRoutes);
 app.use("/api", expenseRoutes);
 app.use("/api", attractionRoutes);
 
+// Catch-all 404 handler for unregistered routes
+export function notFoundHandler(req: express.Request, res: express.Response): void {
+  res.status(404).json({
+    success: false,
+    message: `Route ${req.method} ${req.originalUrl} not found`,
+  });
+}
 
-async function startServer(): Promise<void> {
+// Centralized error-handling middleware (Express 5 signature)
+export function errorHandler(
+  err: unknown,
+  _req: express.Request,
+  res: express.Response,
+  _next: express.NextFunction
+): void {
+  // Check for malformed JSON payload thrown by express.json()
+  if (
+    err instanceof SyntaxError &&
+    "status" in err &&
+    (err as { status?: number }).status === 400 &&
+    "body" in err
+  ) {
+    res.status(400).json({
+      success: false,
+      message: "Malformed JSON payload in request body.",
+    });
+    return;
+  }
+
+  console.error("Unhandled server error:", err);
+
+  const hasStatus =
+    err !== null &&
+    typeof err === "object" &&
+    "status" in err &&
+    typeof (err as { status: unknown }).status === "number";
+
+  const statusCode =
+    hasStatus &&
+    (err as { status: number }).status >= 400 &&
+    (err as { status: number }).status < 600
+      ? (err as { status: number }).status
+      : 500;
+
+  const message =
+    statusCode === 500
+      ? "Internal server error."
+      : err instanceof Error
+        ? err.message
+        : "An unexpected error occurred.";
+
+  res.status(statusCode).json({
+    success: false,
+    message,
+  });
+}
+
+app.use(notFoundHandler);
+app.use(errorHandler);
+
+export { app };
+
+export async function startServer(): Promise<void> {
   try {
     await connectToDatabase();
 
@@ -51,6 +112,11 @@ async function startServer(): Promise<void> {
   }
 }
 
+const isDirectExecution =
+  process.argv[1] &&
+  (process.argv[1].endsWith("server.ts") ||
+    process.argv[1].endsWith("server.js"));
 
-
-startServer();
+if (isDirectExecution) {
+  startServer();
+}

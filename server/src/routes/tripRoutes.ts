@@ -4,6 +4,7 @@ import {
   createTrip,
   deleteTrip,
   getTrips,
+  updateTrip,
 } from "../controllers/tripController.js";
 import { requireAuth } from "../middleware/auth.js";
 
@@ -14,6 +15,9 @@ router.post("/", requireAuth, createTrip);
 
 // Retrieve all saved trips
 router.get("/", requireAuth, getTrips);
+
+// Update an existing owned trip
+router.put("/:tripId", requireAuth, updateTrip);
 
 // Delete one owned trip and its related records
 router.delete("/:tripId", requireAuth, deleteTrip);

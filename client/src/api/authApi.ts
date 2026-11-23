@@ -2,6 +2,7 @@ const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
 
 const TOKEN_KEY = "travelmate_token";
+const USER_KEY = "travelmate_user";
 
 export function getAuthToken(): string | null {
   try {
@@ -22,6 +23,43 @@ export function setAuthToken(token: string): void {
 export function clearAuthToken(): void {
   try {
     localStorage.removeItem(TOKEN_KEY);
+    clearStoredUser();
+  } catch {
+    // ignore
+  }
+}
+
+export function getStoredUser(): AuthUser | null {
+  try {
+    const token = getAuthToken();
+    if (!token) {
+      return null;
+    }
+    const raw = localStorage.getItem(USER_KEY);
+    if (!raw) {
+      return null;
+    }
+    const user = JSON.parse(raw) as AuthUser;
+    if (!user || typeof user._id !== "string" || !user.email) {
+      return null;
+    }
+    return user;
+  } catch {
+    return null;
+  }
+}
+
+export function setStoredUser(user: AuthUser): void {
+  try {
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
+  } catch {
+    // ignore
+  }
+}
+
+export function clearStoredUser(): void {
+  try {
+    localStorage.removeItem(USER_KEY);
   } catch {
     // ignore
   }
