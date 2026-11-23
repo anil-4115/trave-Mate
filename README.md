@@ -2,7 +2,7 @@
 
 TravelMate is a full-stack web application designed to simplify travel planning. It helps users explore destinations, create trips, generate personalized itineraries, manage travel expenses, and organize packing checklists in one place.
 
-The project is built using React, TypeScript, Node.js, Express, and MongoDB. It follows a client-server architecture and provides REST APIs for communication between the frontend and backend.
+The project is built using React, JavaScript, Node.js, Express, and MongoDB. It follows a client-server architecture and provides REST APIs for communication between the frontend and backend.
 
 ## Live Demo
 
@@ -69,8 +69,8 @@ The project is built using React, TypeScript, Node.js, Express, and MongoDB. It 
 
 | Layer | Technologies |
 |---|---|
-| Frontend | React 19, TypeScript, Vite |
-| Backend | Node.js, Express, TypeScript |
+| Frontend | React 19, JavaScript (JSX), Vite |
+| Backend | Node.js, Express, JavaScript (ES Modules) |
 | Database | MongoDB Atlas |
 | ODM | Mongoose |
 | Authentication | JSON Web Tokens (JWT), bcrypt |
@@ -86,7 +86,7 @@ The project is built using React, TypeScript, Node.js, Express, and MongoDB. It 
                    User
                     |
                     v
-          React + TypeScript UI
+          React + JavaScript (JSX) UI
               (Vercel)
                     |
               HTTP / REST API
@@ -321,7 +321,7 @@ This project demonstrates practical application of:
 - Full-stack web development.
 - React components, hooks, and state management.
 - REST API design using Express.
-- TypeScript across frontend and backend.
+- JavaScript across frontend and backend.
 - MongoDB data modeling and Mongoose.
 - Authentication and authorization.
 - Input validation and error handling.
